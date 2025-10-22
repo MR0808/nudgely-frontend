@@ -12,7 +12,7 @@ import { Pricing } from '@/components/pricing';
 import { ContactCTA } from '@/components/contact-cta';
 
 export const metadata: Metadata = {
-    title: 'Nudgely - Keep Your Team Aligned with Smart Nudges & Reminders',
+    title: 'Nudgely - Keep Your Team Aligned',
     description:
         'Transform team productivity with intelligent nudges and reminders. Keep everyone aligned on deadlines, follow-ups, and meetings. Join 120+ teams using Nudgely.',
     keywords: [
