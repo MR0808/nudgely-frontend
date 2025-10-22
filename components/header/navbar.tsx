@@ -58,7 +58,7 @@ const Navbar = ({ isOpen, setIsOpen, navItems, pageLinks }: ChildProps) => {
         if (href.startsWith('#')) {
             e.preventDefault();
             // If on contact page, navigate to homepage with hash
-            if (isContactPage || isAboutPage || isTermsPage || isPrivacyPage) {
+            if (!isHomePage) {
                 router.push(`/${href}`);
             } else {
                 // If on homepage, scroll to section
