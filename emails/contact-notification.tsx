@@ -13,64 +13,46 @@ import {
     Text
 } from '@react-email/components';
 
-interface YelpRecentLoginEmailProps {
-    userFirstName?: string;
-    loginDate?: Date;
-    loginDevice?: string;
-    loginLocation?: string;
-    loginIp?: string;
+interface ContactEmailProps {
+    name?: string;
+    email?: string;
+    company?: string;
+    message?: string;
 }
 
-const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : '';
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL
+    ? process.env.NEXT_PUBLIC_APP_URL
+    : 'http://localhost:3000';
 
-export const YelpRecentLoginEmail = ({
-    userFirstName,
-    loginDate,
-    loginDevice,
-    loginLocation,
-    loginIp
-}: YelpRecentLoginEmailProps) => {
+export const ContactEmail = ({
+    name,
+    email,
+    company,
+    message
+}: ContactEmailProps) => {
     const formattedDate = new Intl.DateTimeFormat('en', {
         dateStyle: 'long',
         timeStyle: 'short'
-    }).format(loginDate);
+    }).format(new Date());
 
     return (
         <Html>
             <Head />
             <Body style={main}>
-                <Preview>Yelp recent login</Preview>
+                <Preview>Recent nudgely contact from website</Preview>
                 <Container>
                     <Section style={logo}>
                         <Img
-                            src={`${baseUrl}/static/yelp-logo.png`}
-                            alt="Yelp logo"
+                            src={`${baseUrl}/logo.png`}
+                            width="120"
+                            height="36"
+                            alt="Nudgely"
                         />
                     </Section>
 
                     <Section style={content}>
-                        <Row>
-                            <Img
-                                style={image}
-                                width={620}
-                                src={`${baseUrl}/static/yelp-header.png`}
-                                alt="Yelp header illustration"
-                            />
-                        </Row>
-
                         <Row style={{ ...boxInfos, paddingBottom: '0' }}>
                             <Column>
-                                <Heading
-                                    style={{
-                                        fontSize: 32,
-                                        fontWeight: 'bold',
-                                        textAlign: 'center'
-                                    }}
-                                >
-                                    Hi {userFirstName},
-                                </Heading>
                                 <Heading
                                     as="h2"
                                     style={{
@@ -79,85 +61,58 @@ export const YelpRecentLoginEmail = ({
                                         textAlign: 'center'
                                     }}
                                 >
-                                    We noticed a recent login to your Yelp
-                                    account.
+                                    Recent contact email from website
                                 </Heading>
 
                                 <Text style={paragraph}>
-                                    <b>Time: </b>
+                                    <b>Date: </b>
                                     {formattedDate}
                                 </Text>
                                 <Text style={{ ...paragraph, marginTop: -5 }}>
-                                    <b>Device: </b>
-                                    {loginDevice}
+                                    <b>Name: </b>
+                                    {name}
                                 </Text>
                                 <Text style={{ ...paragraph, marginTop: -5 }}>
-                                    <b>Location: </b>
-                                    {loginLocation}
+                                    <b>Email: </b>
+                                    {email}
                                 </Text>
                                 <Text
                                     style={{
-                                        color: 'rgb(0,0,0, 0.5)',
-                                        fontSize: 14,
+                                        ...paragraph,
                                         marginTop: -5
                                     }}
                                 >
-                                    *Approximate geographic location based on IP
-                                    address:
-                                    {loginIp}
+                                    <b>Company: </b>
+                                    {company}
                                 </Text>
 
-                                <Text style={paragraph}>
-                                    If this was you, there's nothing else you
-                                    need to do.
-                                </Text>
-                                <Text style={{ ...paragraph, marginTop: -5 }}>
-                                    If this wasn't you or if you have additional
-                                    questions, please see our support page.
+                                <Text
+                                    style={{
+                                        ...paragraph,
+                                        whiteSpace: 'pre-line'
+                                    }}
+                                >
+                                    {message}
                                 </Text>
                             </Column>
                         </Row>
-                        <Row style={{ ...boxInfos, paddingTop: '0' }}>
-                            <Column style={buttonContainer} colSpan={2}>
-                                <Button style={button}>Learn More</Button>
-                            </Column>
-                        </Row>
                     </Section>
-
-                    <Section style={containerImageFooter}>
-                        <Img
-                            style={image}
-                            width={620}
-                            src={`${baseUrl}/static/yelp-footer.png`}
-                            alt="Yelp footer decoration"
-                        />
-                    </Section>
-
-                    <Text
-                        style={{
-                            textAlign: 'center',
-                            fontSize: 12,
-                            color: 'rgb(0,0,0, 0.7)'
-                        }}
-                    >
-                        © 2022 | Yelp Inc., 350 Mission Street, San Francisco,
-                        CA 94105, U.S.A. | www.yelp.com
-                    </Text>
                 </Container>
             </Body>
         </Html>
     );
 };
 
-YelpRecentLoginEmail.PreviewProps = {
-    userFirstName: 'Alan',
-    loginDate: new Date('September 7, 2022, 10:58 am'),
-    loginDevice: 'Chrome on Mac OS X',
-    loginLocation: 'Upland, California, United States',
-    loginIp: '47.149.53.167'
-} as YelpRecentLoginEmailProps;
+ContactEmail.PreviewProps = {
+    name: 'Alan',
+    email: 'mark@mark.com',
+    company: 'That company',
+    message: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pulvinar aliquam lorem, interdum feugiat purus porttitor eu. Etiam blandit felis in hendrerit placerat. Aliquam erat volutpat. Phasellus libero tellus, aliquet id accumsan in, imperdiet ut mi. Vivamus quis odio vehicula, imperdiet massa sed, sagittis est. Aenean ultricies quam non leo commodo ultricies. Nulla pulvinar maximus tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Suspendisse pulvinar augue metus, id tempor purus ornare in. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec congue dolor id pellentesque lacinia. Duis a accumsan felis. Aliquam justo leo, volutpat ac massa sit amet, fermentum vehicula lectus. Nam posuere mi non magna porta semper.
 
-export default YelpRecentLoginEmail;
+Ut feugiat tempus nulla, quis placerat augue blandit interdum. Nullam egestas eleifend ex, et auctor metus venenatis eu. Vivamus sit amet lorem suscipit ligula interdum iaculis posuere vel justo. Donec orci mauris, facilisis eget nunc vel, facilisis posuere justo. Aenean porta sagittis orci, interdum iaculis erat tincidunt vitae. Donec ac pharetra massa. Integer magna felis, lobortis quis aliquam vitae, consequat non sem. Mauris consectetur feugiat malesuada.`
+} as ContactEmailProps;
+
+export default ContactEmail;
 
 const main = {
     backgroundColor: '#fff',

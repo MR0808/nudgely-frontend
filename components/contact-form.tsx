@@ -1,45 +1,49 @@
 'use client';
 
-import { useState } from 'react';
+import * as z from 'zod';
+import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
+import { Loader2, CheckCircle2 } from 'lucide-react';
+
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage
+} from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Loader2, CheckCircle2 } from 'lucide-react';
 import { submitContactForm } from '@/actions/contact';
+import { ContactSchema } from '@/schemas/contact';
+import { toast } from 'sonner';
 
-const contactSchema = z.object({
-    name: z.string().min(2, 'Name must be at least 2 characters'),
-    email: z.string().email('Please enter a valid email address'),
-    company: z.string().optional(),
-    message: z.string().min(10, 'Message must be at least 10 characters')
-});
-
-type ContactFormData = z.infer<typeof contactSchema>;
-
-export function ContactForm() {
+const ContactForm = () => {
     const [isSubmitted, setIsSubmitted] = useState(false);
-    const {
-        register,
-        handleSubmit,
-        formState: { errors, isSubmitting },
-        reset
-    } = useForm<ContactFormData>({
-        resolver: zodResolver(contactSchema)
+    const [isPending, startTransition] = useTransition();
+
+    const form = useForm<z.infer<typeof ContactSchema>>({
+        resolver: zodResolver(ContactSchema),
+        defaultValues: {
+            name: '',
+            message: '',
+            email: '',
+            company: ''
+        }
     });
 
-    const onSubmit = async (data: ContactFormData) => {
-        try {
-            await submitContactForm(data);
-            setIsSubmitted(true);
-            reset();
-            setTimeout(() => setIsSubmitted(false), 5000);
-        } catch (error) {
-            console.error('Failed to submit contact form:', error);
-        }
+    const onSubmit = (values: z.infer<typeof ContactSchema>) => {
+        startTransition(async () => {
+            const data = await submitContactForm(values);
+            if (!data.error) {
+                form.reset();
+                setIsSubmitted(true);
+                toast.success('Message sent');
+            }
+        });
     };
 
     if (isSubmitted) {
@@ -59,77 +63,143 @@ export function ContactForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <div className="space-y-2">
-                <Label htmlFor="name">Name *</Label>
-                <Input
-                    id="name"
-                    placeholder="John Doe"
-                    {...register('name')}
-                    className={errors.name ? 'border-red-500' : ''}
-                />
-                {errors.name && (
-                    <p className="text-sm text-red-500">
-                        {errors.name.message}
-                    </p>
-                )}
-            </div>
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <div className="space-y-2">
+                    <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Name *</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        type="text"
+                                        placeholder="John Doe"
+                                        {...field}
+                                        className={
+                                            form.formState.errors.name
+                                                ? 'border-red-500'
+                                                : ''
+                                        }
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
+                <div className="space-y-2">
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Email *</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        type="email"
+                                        placeholder="john@company.com"
+                                        {...field}
+                                        className={
+                                            form.formState.errors.email
+                                                ? 'border-red-500'
+                                                : ''
+                                        }
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
+                <div className="space-y-2">
+                    <FormField
+                        control={form.control}
+                        name="company"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Company</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        type="text"
+                                        placeholder="Acme Inc."
+                                        {...field}
+                                        className={
+                                            form.formState.errors.company
+                                                ? 'border-red-500'
+                                                : ''
+                                        }
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
+                <div className="space-y-2">
+                    <FormField
+                        control={form.control}
+                        name="message"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Message *</FormLabel>
+                                <FormControl>
+                                    <Textarea
+                                        placeholder="Tell us how we can help..."
+                                        rows={5}
+                                        {...field}
+                                        className={
+                                            form.formState.errors.message
+                                                ? 'border-red-500'
+                                                : ''
+                                        }
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
+                <div
+                    className="absolute opacity-0 pointer-events-none"
+                    aria-hidden="true"
+                    tabIndex={-1}
+                >
+                    <FormField
+                        control={form.control}
+                        name="website"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        autoComplete="off"
+                                        tabIndex={-1}
+                                    />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+                </div>
 
-            <div className="space-y-2">
-                <Label htmlFor="email">Email *</Label>
-                <Input
-                    id="email"
-                    type="email"
-                    placeholder="john@company.com"
-                    {...register('email')}
-                    className={errors.email ? 'border-red-500' : ''}
-                />
-                {errors.email && (
-                    <p className="text-sm text-red-500">
-                        {errors.email.message}
-                    </p>
-                )}
-            </div>
-
-            <div className="space-y-2">
-                <Label htmlFor="company">Company</Label>
-                <Input
-                    id="company"
-                    placeholder="Acme Inc."
-                    {...register('company')}
-                />
-            </div>
-
-            <div className="space-y-2">
-                <Label htmlFor="message">Message *</Label>
-                <Textarea
-                    id="message"
-                    placeholder="Tell us how we can help..."
-                    rows={5}
-                    {...register('message')}
-                    className={errors.message ? 'border-red-500' : ''}
-                />
-                {errors.message && (
-                    <p className="text-sm text-red-500">
-                        {errors.message.message}
-                    </p>
-                )}
-            </div>
-
-            <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
-            >
-                {isSubmitting ? (
-                    <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Sending...
-                    </>
-                ) : (
-                    'Send Message'
-                )}
-            </Button>
-        </form>
+                <Button
+                    type="submit"
+                    disabled={isPending}
+                    className="cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground w-full"
+                >
+                    {isPending ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Sending...
+                        </>
+                    ) : (
+                        'Send Message'
+                    )}
+                </Button>
+            </form>
+        </Form>
     );
-}
+};
+
+export default ContactForm;

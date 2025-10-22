@@ -2,27 +2,29 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Menu } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
 
 import {
     Sheet,
     SheetContent,
-    SheetTrigger,
     SheetHeader,
     SheetDescription,
     SheetTitle
 } from '@/components/ui/sheet';
-import { Button } from '@/components/ui/button';
 import { ChildProps } from '@/types/header';
 
-const Navbar = ({ isOpen, setIsOpen, navItems }: ChildProps) => {
+const Navbar = ({ isOpen, setIsOpen, navItems, pageLinks }: ChildProps) => {
     const [activeSection, setActiveSection] = useState('');
     const pathname = usePathname();
+    const router = useRouter();
     const isContactPage = pathname === '/contact';
+    const isAboutPage = pathname === '/about';
+    const isTermsPage = pathname === '/terms';
+    const isPrivacyPage = pathname === '/privacy';
+    const isHomePage = pathname === '/';
 
     useEffect(() => {
-        if (isContactPage) return;
+        if (!isHomePage) return;
 
         const handleScroll = () => {
             const sections = navItems.map((item) => item.href.replace('#', ''));
@@ -47,7 +49,7 @@ const Navbar = ({ isOpen, setIsOpen, navItems }: ChildProps) => {
         window.addEventListener('scroll', handleScroll);
         handleScroll();
         return () => window.removeEventListener('scroll', handleScroll);
-    }, [isContactPage]);
+    }, [isHomePage]);
 
     const handleNavClick = (
         e: React.MouseEvent<HTMLAnchorElement>,
@@ -55,17 +57,23 @@ const Navbar = ({ isOpen, setIsOpen, navItems }: ChildProps) => {
     ) => {
         if (href.startsWith('#')) {
             e.preventDefault();
-            const element = document.getElementById(href.replace('#', ''));
-            if (element) {
-                const offset = 80;
-                const elementPosition = element.getBoundingClientRect().top;
-                const offsetPosition =
-                    elementPosition + window.pageYOffset - offset;
+            // If on contact page, navigate to homepage with hash
+            if (isContactPage || isAboutPage || isTermsPage || isPrivacyPage) {
+                router.push(`/${href}`);
+            } else {
+                // If on homepage, scroll to section
+                const element = document.getElementById(href.replace('#', ''));
+                if (element) {
+                    const offset = 80;
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const offsetPosition =
+                        elementPosition + window.pageYOffset - offset;
 
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
             }
             setIsOpen(false);
         }
@@ -93,23 +101,26 @@ const Navbar = ({ isOpen, setIsOpen, navItems }: ChildProps) => {
                         />
                     </a>
                 ))}
-                <Link
-                    href="/contact"
-                    className={`text-sm transition-colors relative group ${
-                        isContactPage
-                            ? 'text-foreground'
-                            : 'text-muted-foreground hover:text-foreground'
-                    }`}
-                >
-                    Contact
-                    <span
-                        className={`absolute -bottom-1 left-1/2 h-0.5 bg-primary transition-all duration-300 ease-out ${
-                            isContactPage
-                                ? 'w-full -translate-x-1/2'
-                                : 'w-0 group-hover:w-full -translate-x-1/2'
+                {pageLinks.map((link) => (
+                    <Link
+                        key={link.name}
+                        href={link.href}
+                        className={`text-sm transition-colors relative group ${
+                            pathname === link.href
+                                ? 'text-foreground'
+                                : 'text-muted-foreground hover:text-foreground'
                         }`}
-                    />
-                </Link>
+                    >
+                        {link.name}
+                        <span
+                            className={`absolute -bottom-1 left-1/2 h-0.5 bg-primary transition-all duration-300 ease-out ${
+                                pathname === link.href
+                                    ? 'w-full -translate-x-1/2'
+                                    : 'w-0 group-hover:w-full -translate-x-1/2'
+                            }`}
+                        />
+                    </Link>
+                ))}
             </nav>
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
                 <SheetContent side="right" className="w-[300px] sm:w-[400px]">
@@ -132,17 +143,20 @@ const Navbar = ({ isOpen, setIsOpen, navItems }: ChildProps) => {
                                 {item.name}
                             </a>
                         ))}
-                        <Link
-                            href="/contact"
-                            onClick={() => setIsOpen(false)}
-                            className={`text-lg py-2 px-4 rounded-md transition-colors ${
-                                isContactPage
-                                    ? 'bg-accent text-accent-foreground'
-                                    : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
-                            }`}
-                        >
-                            Contact
-                        </Link>
+                        {pageLinks.map((link) => (
+                            <Link
+                                key={link.name}
+                                href={link.href}
+                                onClick={() => setIsOpen(false)}
+                                className={`text-lg py-2 px-4 rounded-md transition-colors ${
+                                    pathname === link.href
+                                        ? 'bg-accent text-accent-foreground'
+                                        : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
+                                }`}
+                            >
+                                {link.name}
+                            </Link>
+                        ))}
                     </nav>
                 </SheetContent>
             </Sheet>

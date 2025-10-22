@@ -1,38 +1,38 @@
 'use server';
 
-interface ContactFormData {
-    name: string;
-    email: string;
-    company?: string;
-    message: string;
-}
+import * as z from 'zod';
+import { ContactSchema } from '@/schemas/contact';
+import { getErrorMessage } from '@/lib/handleError';
+import { sendContactEmail } from '@/lib/mail';
 
-export async function submitContactForm(data: ContactFormData) {
-    // Simulate email sending delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+export const submitContactForm = async (
+    values: z.infer<typeof ContactSchema>
+) => {
+    try {
+        if (values.website) {
+            return { error: null };
+        }
+        const validatedFields = ContactSchema.safeParse(values);
 
-    // In production, this would send an email to mark@nudgelyapp.com
-    // For now, we'll just log the submission
-    console.log('Contact form submission:', {
-        to: 'mark@nudgelyapp.com',
-        from: data.email,
-        subject: `New contact form submission from ${data.name}`,
-        body: `
-      Name: ${data.name}
-      Email: ${data.email}
-      Company: ${data.company || 'Not provided'}
-      Message: ${data.message}
-    `
-    });
+        if (!validatedFields.success) {
+            return {
+                error: getErrorMessage('Invalid fields!')
+            };
+        }
 
-    // TODO: Integrate with email service (Resend, SendGrid, etc.)
-    // Example with Resend:
-    // await resend.emails.send({
-    //   from: 'noreply@nudgelyapp.com',
-    //   to: 'mark@nudgelyapp.com',
-    //   subject: `New contact form submission from ${data.name}`,
-    //   html: `<p><strong>Name:</strong> ${data.name}</p>...`
-    // })
+        const { name, email, company, message } = validatedFields.data;
 
-    return { success: true };
-}
+        await sendContactEmail({
+            name,
+            email,
+            company,
+            message
+        });
+
+        return { error: null };
+    } catch (error) {
+        return {
+            error: error instanceof Error ? error.message : 'An error occurred'
+        };
+    }
+};

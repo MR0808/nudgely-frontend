@@ -1,5 +1,6 @@
 'use server';
 
+import ContactEmail from '@/emails/contact-notification';
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -11,21 +12,23 @@ const fromNudgely = `Nudgely Support <${
     process.env.NEXT_PUBLIC_APP_EMAIL_SUPPORT as string
 }>`;
 
-// export const sendVerificationEmail = async ({
-//     email,
-//     otp,
-//     name
-// }: {
-//     email: string;
-//     otp: string;
-//     name: string;
-// }) => {
-//     const sent = await resend.emails.send({
-//         from: fromNudgely,
-//         to: email,
-//         subject: 'Nudgely - Confirm your email',
-//         react: EmailOTPEmailTemplate({ name, otp })
-//     });
+export const sendContactEmail = async ({
+    email,
+    name,
+    company,
+    message
+}: {
+    email: string;
+    name: string;
+    company?: string;
+    message: string;
+}) => {
+    const sent = await resend.emails.send({
+        from: fromNudgely,
+        to: fromPerson,
+        subject: 'Nudgely - Contact email from website',
+        react: ContactEmail({ email, name, company, message })
+    });
 
-//     return sent;
-// };
+    return sent;
+};

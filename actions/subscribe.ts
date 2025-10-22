@@ -1,8 +1,25 @@
 'use server';
 
+import * as z from 'zod';
+
+import { WaitlistSchema } from '@/schemas/waitlist';
 import { KitSubscriptionResponse } from '@/types/subscribe';
 
-export async function subscribeToNewsletter(email: string, name: string) {
+export async function subscribeToNewsletter(
+    values: z.infer<typeof WaitlistSchema>
+) {
+    if (values.phone) {
+        return { data: true };
+    }
+
+    const validatedFields = WaitlistSchema.safeParse(values);
+
+    if (!validatedFields.success) {
+        throw new Error('Invalid fields.');
+    }
+
+    const { name, email } = validatedFields.data;
+
     const API_KEY = process.env.KIT_API_KEY;
     const FORM_ID = process.env.KIT_FORM_ID; // Replace with your ConvertKit form ID
 

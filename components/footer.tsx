@@ -15,26 +15,26 @@ export function Footer() {
                             className="h-8 w-8"
                         />
                         <span className="text-sm text-muted-foreground">
-                            © 2025 Nudgely. All rights reserved. Made with focus
-                            in Melbourne!
+                            © 2025 Nudgely. All rights reserved. Made with
+                            focus in Melbourne!
                         </span>
                     </div>
 
                     <nav className="flex items-center gap-6">
                         <Link
-                            href="#"
+                            href="/privacy"
                             className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                         >
                             Privacy Policy
                         </Link>
                         <Link
-                            href="#"
+                            href="/terms"
                             className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                         >
                             Terms of Service
                         </Link>
                         <Link
-                            href="#"
+                            href="/contact"
                             className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                         >
                             Contact

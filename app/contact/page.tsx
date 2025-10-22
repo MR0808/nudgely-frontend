@@ -1,7 +1,37 @@
-import { Header } from '@/components/header';
-import { ContactForm } from '@/components/contact-form';
-import { Footer } from '@/components/footer';
 import { Mail, MessageSquare, Clock } from 'lucide-react';
+import type { Metadata } from 'next';
+
+import { Header } from '@/components/header';
+import ContactForm from '@/components/contact-form';
+import { Footer } from '@/components/footer';
+
+export const metadata: Metadata = {
+    title: 'Contact Us - Get in Touch with Nudgely',
+    description:
+        'Have questions about Nudgely? Contact our team to learn more about how smart nudges can keep your team aligned and productive. We respond within 24 hours.',
+    keywords: [
+        'contact nudgely',
+        'customer support',
+        'team alignment support',
+        'productivity tool help'
+    ],
+    openGraph: {
+        title: 'Contact Us - Get in Touch with Nudgely',
+        description:
+            'Have questions about Nudgely? Contact our team to learn more about how smart nudges can keep your team aligned and productive.',
+        url: 'https://nudgelyapp.com/contact',
+        type: 'website'
+    },
+    twitter: {
+        card: 'summary',
+        title: 'Contact Us - Get in Touch with Nudgely',
+        description:
+            'Have questions about Nudgely? Contact our team to learn more about how smart nudges can keep your team aligned and productive.'
+    },
+    alternates: {
+        canonical: 'https://nudgelyapp.com/contact'
+    }
+};
 
 export default function ContactPage() {
     return (
@@ -42,20 +72,6 @@ export default function ContactPage() {
                             </div>
 
                             <div className="space-y-6">
-                                <div className="flex gap-4">
-                                    <div className="w-12 h-12 rounded-lg bg-teal-50 flex items-center justify-center shrink-0">
-                                        <Mail className="w-5 h-5 text-teal-600" />
-                                    </div>
-                                    <div>
-                                        <h3 className="font-semibold text-navy mb-1">
-                                            Email us
-                                        </h3>
-                                        <p className="text-muted-foreground">
-                                            mark@nudgelyapp.com
-                                        </p>
-                                    </div>
-                                </div>
-
                                 <div className="flex gap-4">
                                     <div className="w-12 h-12 rounded-lg bg-indigo-50 flex items-center justify-center shrink-0">
                                         <Clock className="w-5 h-5 text-indigo-600" />

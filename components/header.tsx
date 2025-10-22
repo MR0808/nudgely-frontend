@@ -16,6 +16,11 @@ const navItems = [
     { name: 'Join Waitlist', href: '#waitlist' }
 ];
 
+const pageLinks = [
+    { name: 'About', href: '/about' },
+    { name: 'Contact', href: '/contact' }
+];
+
 export function Header() {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -28,6 +33,7 @@ export function Header() {
                         isOpen={isOpen}
                         setIsOpen={setIsOpen}
                         navItems={navItems}
+                        pageLinks={pageLinks}
                     />
                     <div className="flex flex-row space-x-2">
                         <ThemeToggle />

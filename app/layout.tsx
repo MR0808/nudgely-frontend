@@ -4,31 +4,58 @@ import { ThemeProvider } from '@/context/ThemeContext';
 import { Inter } from 'next/font/google';
 import './globals.css';
 
-import siteMetadata from '@/utils/siteMetaData';
-
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-    metadataBase: new URL(siteMetadata.siteUrl),
+    metadataBase: new URL('https://nudgelyapp.com'),
     title: {
-        template: `${siteMetadata.title} | %s`,
-        default: `${siteMetadata.title} | Keep Your Team Aligned` // a default is required when creating a template
+        default: 'Nudgely - Keep Your Team Aligned with Smart Nudges',
+        template: '%s | Nudgely'
     },
-    applicationName: siteMetadata.title,
-    description: siteMetadata.description,
-    appleWebApp: {
-        title: siteMetadata.title,
-        statusBarStyle: 'default',
-        capable: true
+    description:
+        'Smart nudges and reminders to keep your team aligned and productive. Never miss a deadline, follow-up, or important meeting again.',
+    keywords: [
+        'team collaboration',
+        'productivity',
+        'reminders',
+        'nudges',
+        'team alignment',
+        'project management',
+        'SaaS',
+        'workflow automation'
+    ],
+    authors: [{ name: 'Nudgely' }],
+    creator: 'Nudgely',
+    publisher: 'Nudgely',
+    formatDetection: {
+        email: false,
+        address: false,
+        telephone: false
     },
     openGraph: {
-        title: siteMetadata.title,
-        description: siteMetadata.description,
-        url: siteMetadata.siteUrl,
-        siteName: siteMetadata.title,
-        images: [siteMetadata.siteLogo],
-        locale: 'en_AU',
-        type: 'website'
+        type: 'website',
+        locale: 'en_US',
+        url: 'https://nudgelyapp.com',
+        title: 'Nudgely - Keep Your Team Aligned with Smart Nudges',
+        description:
+            'Smart nudges and reminders to keep your team aligned and productive. Never miss a deadline, follow-up, or important meeting again.',
+        siteName: 'Nudgely',
+        images: [
+            {
+                url: '/logo.png',
+                width: 1200,
+                height: 630,
+                alt: 'Nudgely - Team Alignment Platform'
+            }
+        ]
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Nudgely - Keep Your Team Aligned with Smart Nudges',
+        description:
+            'Smart nudges and reminders to keep your team aligned and productive. Never miss a deadline, follow-up, or important meeting again.',
+        images: ['/og-image.png'],
+        creator: '@nudgelyapp'
     },
     robots: {
         index: true,
@@ -36,16 +63,14 @@ export const metadata: Metadata = {
         googleBot: {
             index: true,
             follow: true,
-            noimageindex: true,
             'max-video-preview': -1,
             'max-image-preview': 'large',
             'max-snippet': -1
         }
     },
-    twitter: {
-        card: 'summary_large_image',
-        title: siteMetadata.title,
-        images: [siteMetadata.siteLogo]
+    verification: {
+        google: 'your-google-verification-code',
+        yandex: 'your-yandex-verification-code'
     }
 };
 
