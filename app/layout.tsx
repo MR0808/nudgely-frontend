@@ -83,6 +83,11 @@ export default function RootLayout({
         <html lang="en" suppressHydrationWarning>
             <head>
                 <meta name="apple-mobile-web-app-title" content="Nudgely" />
+                <script
+                    defer
+                    src="https://cloud.umami.is/script.js"
+                    data-website-id="fa617c1d-7178-4f29-93e6-116726cdea9d"
+                ></script>
             </head>
             <body className={inter.className} suppressHydrationWarning>
                 <ThemeProvider>{children}</ThemeProvider>
