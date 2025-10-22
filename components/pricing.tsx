@@ -79,7 +79,7 @@ export function Pricing() {
     const [isYearly, setIsYearly] = useState(false);
 
     return (
-        <section className="py-24 px-4 bg-muted/30">
+        <section id="pricing" className="py-24 px-4 bg-muted/30">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="text-center mb-16">

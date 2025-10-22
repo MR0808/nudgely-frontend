@@ -1,36 +1,46 @@
+'use client';
+
+import { useState } from 'react';
+import { Menu } from 'lucide-react';
+
 import Logo from '@/components/header/logo';
+import Navbar from '@/components/header/navbar';
 import ThemeToggle from '@/components/header/theme-toggle';
-import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+
+const navItems = [
+    { name: 'How It Works', href: '#how-it-works' },
+    { name: 'Benefits', href: '#benefits' },
+    { name: 'Pricing', href: '#pricing' },
+    { name: 'FAQs', href: '#faq' },
+    { name: 'Join Waitlist', href: '#waitlist' }
+];
 
 export function Header() {
+    const [isOpen, setIsOpen] = useState(false);
+
     return (
         <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     <Logo />
-
-                    <nav className="hidden md:flex items-center gap-8">
-                        <Link
-                            href="#how-it-works"
-                            className="text-sm text-muted-foreground hover:text-foreground transition-colors group"
+                    <Navbar
+                        isOpen={isOpen}
+                        setIsOpen={setIsOpen}
+                        navItems={navItems}
+                    />
+                    <div className="flex flex-row space-x-2">
+                        <ThemeToggle />
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="md:hidden"
+                            onClick={() => setIsOpen(true)}
                         >
-                            How It Works
-                            <div className="absolute left-[50%] group-hover:left-0 w-0 group-hover:w-full h-[3px] transition-all duration-300 bg-base-content/90"></div>
-                        </Link>
-                        <Link
-                            href="#benefits"
-                            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                        >
-                            Benefits
-                        </Link>
-                        <Link
-                            href="#waitlist"
-                            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                        >
-                            Join Waitlist
-                        </Link>
-                    </nav>
-                    <ThemeToggle />
+                            <Menu className="h-5 w-5" />
+                            <span className="sr-only">Toggle menu</span>
+                        </Button>
+                    </div>
                 </div>
             </div>
         </header>

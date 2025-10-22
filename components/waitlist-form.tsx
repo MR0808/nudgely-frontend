@@ -1,17 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import * as z from 'zod';
+import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Loader2, CheckCircle2 } from 'lucide-react';
-import { submitWaitlist } from '@/actions/waitlist';
+import { subscribeToNewsletter } from '@/actions/subscribe';
 
 const waitlistSchema = z.object({
-    email: z.string().email('Please enter a valid email address'),
+    email: z.email('Please enter a valid email address'),
     name: z.string().min(2, 'Name must be at least 2 characters')
 });
 
@@ -20,32 +21,30 @@ type WaitlistFormData = z.infer<typeof waitlistSchema>;
 export function WaitlistForm() {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [isPending, startTransition] = useTransition();
 
     const {
         register,
         handleSubmit,
-        formState: { errors, isSubmitting },
+        formState: { errors },
         reset
     } = useForm<WaitlistFormData>({
         resolver: zodResolver(waitlistSchema)
     });
 
     const onSubmit = async (data: WaitlistFormData) => {
-        try {
-            setError(null);
-            const result = await submitWaitlist(data);
+        setError(null);
+        startTransition(async () => {
+            const result = await subscribeToNewsletter(data.email, data.name);
 
-            if (result.success) {
+            if (!result) {
+                setError('Something went wrong. Please try again.');
+            }
+            if (result) {
                 setIsSubmitted(true);
                 reset();
-            } else {
-                setError(
-                    result.error || 'Something went wrong. Please try again.'
-                );
             }
-        } catch (err) {
-            setError('Something went wrong. Please try again.');
-        }
+        });
     };
 
     if (isSubmitted) {
@@ -69,7 +68,7 @@ export function WaitlistForm() {
                         <Button
                             variant="outline"
                             onClick={() => setIsSubmitted(false)}
-                            className="mt-4"
+                            className="mt-4 cursor-pointer"
                         >
                             Join another email
                         </Button>
@@ -143,10 +142,10 @@ export function WaitlistForm() {
                         <Button
                             type="submit"
                             size="lg"
-                            className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground"
-                            disabled={isSubmitting}
+                            className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground cursor-pointer"
+                            disabled={isPending}
                         >
-                            {isSubmitting ? (
+                            {isPending ? (
                                 <>
                                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                                     Joining...

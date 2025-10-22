@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 import { useTheme } from '@/context/ThemeContext';
@@ -16,7 +15,7 @@ export default function Logo() {
                 alt="Nudgely"
                 width={120}
                 height={32}
-                className={`h-8 w-auto transition-opacity duration-300 ${
+                className={`h-8 w-auto transition-all duration-5000 ease-in-out ${
                     isDarkMode ? 'hidden' : 'visible'
                 }`}
             />
@@ -25,7 +24,7 @@ export default function Logo() {
                 alt="Nudgely"
                 width={120}
                 height={32}
-                className={`h-8 w-auto transition-opacity duration-300 ${
+                className={`h-8 w-auto transition-all duration-5000 ease-in-out ${
                     isDarkMode ? 'visible' : 'hidden'
                 }`}
             />
