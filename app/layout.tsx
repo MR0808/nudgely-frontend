@@ -1,4 +1,6 @@
 import type React from 'react';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
 import { ThemeProvider } from '@/context/ThemeContext';
 import { Inter } from 'next/font/google';
@@ -91,7 +93,11 @@ export default function RootLayout({
                 ></script>
             </head>
             <body className={inter.className} suppressHydrationWarning>
-                <ThemeProvider>{children}</ThemeProvider>
+                <ThemeProvider>
+                    {children}
+                    <Analytics />
+                    <SpeedInsights />
+                </ThemeProvider>
             </body>
         </html>
     );
