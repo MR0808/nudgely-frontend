@@ -27,6 +27,7 @@ export const metadata: Metadata = {
     authors: [{ name: 'Nudgely' }],
     creator: 'Nudgely',
     publisher: 'Nudgely',
+    manifest: '/manifest.json',
     formatDetection: {
         email: false,
         address: false,

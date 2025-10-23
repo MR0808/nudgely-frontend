@@ -1,4 +1,3 @@
-import { cn } from '@/lib/utils';
 import {
     Archive,
     Award,
@@ -12,6 +11,8 @@ import {
     Users,
     Users2
 } from 'lucide-react';
+
+import { cn } from '@/lib/utils';
 
 type FrequentlyAskedQuestion = {
     question: string;

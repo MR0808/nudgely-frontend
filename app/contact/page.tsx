@@ -1,4 +1,4 @@
-import { Mail, MessageSquare, Clock } from 'lucide-react';
+import { MessageSquare, Clock } from 'lucide-react';
 import type { Metadata } from 'next';
 
 import { Header } from '@/components/header';

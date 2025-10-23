@@ -17,10 +17,6 @@ const Navbar = ({ isOpen, setIsOpen, navItems, pageLinks }: ChildProps) => {
     const [activeSection, setActiveSection] = useState('');
     const pathname = usePathname();
     const router = useRouter();
-    const isContactPage = pathname === '/contact';
-    const isAboutPage = pathname === '/about';
-    const isTermsPage = pathname === '/terms';
-    const isPrivacyPage = pathname === '/privacy';
     const isHomePage = pathname === '/';
 
     useEffect(() => {
