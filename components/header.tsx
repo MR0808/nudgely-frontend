@@ -12,8 +12,7 @@ const navItems = [
     { name: 'How It Works', href: '#how-it-works' },
     { name: 'Benefits', href: '#benefits' },
     { name: 'Pricing', href: '#pricing' },
-    { name: 'FAQs', href: '#faq' },
-    { name: 'Join Waitlist', href: '#waitlist' }
+    { name: 'FAQs', href: '#faq' }
 ];
 
 const pageLinks = [

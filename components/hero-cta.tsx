@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
 export function HeroCTA() {
     const scrollToWaitlist = () => {
@@ -22,17 +23,18 @@ export function HeroCTA() {
                         Ready to keep your team aligned?
                     </h2>
                     <p className="text-lg text-muted-foreground mb-8 text-pretty">
-                        Join the waitlist and be among the first to experience
+                        Join the beta and be among the first to experience
                         smarter team coordination with Nudgely.
                     </p>
-                    <Button
-                        size="lg"
-                        className="cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground px-8 h-12 text-base"
-                        onClick={scrollToWaitlist}
-                    >
-                        Join the Waitlist
-                        <ArrowRight className="ml-2 h-5 w-5" />
-                    </Button>
+                    <Link href="https://app.nudgelyapp.com/auth/register">
+                        <Button
+                            size="lg"
+                            className="cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground px-8 h-12 text-base"
+                        >
+                            Join the Beta
+                            <ArrowRight className="ml-2 h-5 w-5" />
+                        </Button>
+                    </Link>
                 </div>
             </div>
         </section>

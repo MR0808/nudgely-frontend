@@ -61,8 +61,7 @@ export function WaitlistForm() {
                             You're on the list!
                         </h2>
                         <p className="text-lg text-muted-foreground">
-                            Thanks for joining our waitlist. We'll notify you as
-                            soon as Nudgely launches.
+                            Thanks for joining our mailing list.
                         </p>
                         <Button
                             variant="outline"
@@ -85,11 +84,11 @@ export function WaitlistForm() {
             <div className="container mx-auto max-w-2xl">
                 <div className="text-center space-y-4 mb-12">
                     <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">
-                        Join the Waitlist
+                        Join the Mailing List
                     </h2>
                     <p className="text-xl text-muted-foreground text-balance">
-                        Be the first to know when Nudgely launches. Get early
-                        access and exclusive updates.
+                        Be the first to know when Nudgely launches after the
+                        beta. Get early access and exclusive updates.
                     </p>
                 </div>
 
@@ -182,7 +181,7 @@ export function WaitlistForm() {
                                         Joining...
                                     </>
                                 ) : (
-                                    'Join Waitlist'
+                                    'Join Mailing List'
                                 )}
                             </Button>
 

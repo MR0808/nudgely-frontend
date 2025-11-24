@@ -2,6 +2,7 @@
 
 import { ArrowRight, Calendar, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export function Hero() {
     const scrollToWaitlist = () => {
@@ -20,27 +21,28 @@ export function Hero() {
                         <span className="text-teal-500">recurring</span> tasks
                         again
                     </h1>
-
                     {/* Subheadline */}
                     <p className="text-xl sm:text-2xl text-muted-foreground max-w-3xl mx-auto text-balance leading-relaxed">
                         Nudgely automates your team's recurring reminders — so
                         you can stop chasing and start focusing.
                     </p>
-
                     {/* CTA Buttons */}
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-                        <Button
-                            size="lg"
-                            className="cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground px-8 h-12 text-base"
-                            onClick={scrollToWaitlist}
-                        >
-                            Join the Waitlist
-                            <ArrowRight className="ml-2 h-5 w-5" />
-                        </Button>
+                        <Link href="https://app.nudgelyapp.com/auth/register">
+                            <Button
+                                size="lg"
+                                className="cursor-pointer bg-primary hover:bg-primary/90 text-primary-foreground px-8 h-12 text-base"
+                            >
+                                Join the Beta
+                                <ArrowRight className="ml-2 h-5 w-5" />
+                            </Button>
+                        </Link>
                     </div>
-
+                    <p className="text-sm text-muted-foreground max-w-3xl mx-auto text-balance leading-relaxed">
+                        Use the code "BETA2025" to get six months free
+                    </p>
                     {/* Hero Visual */}
-                    <div className="pt-12">
+                    <div className="pt-2">
                         <div className="relative mx-auto max-w-5xl">
                             <div className="absolute inset-0 bg-linear-to-r from-teal/20 to-accent/20 blur-3xl -z-10" />
                             <div className="bg-card border border-border rounded-2xl p-8 shadow-2xl">
